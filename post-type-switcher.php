@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post Type Switcher
+ * Post Type Switcher Extended
  *
  * Allow switching of a post type while editing a post (in post publish section)
  *
@@ -9,14 +9,14 @@
  */
 
 /**
- * Plugin Name: Post Type Switcher
+ * Plugin Name: Post Type Switcher Extended
  * Plugin URI:  https://wordpress.org/plugins/post-type-switcher/
  * Author:      John James Jacoby
  * Author URI:  https://profiles.wordpress.org/johnjamesjacoby/
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Allow switching of a post type while editing a post (in post publish section)
- * Version:     3.1.1
+ * Version:     3.1.2
  * Text Domain: post-type-switcher
  * Domain Path: /assets/lang/
  */
@@ -323,7 +323,9 @@ final class Post_Type_Switcher {
 	 *
 	 * @return Maybe modified $data
 	 */
-	public function override_type( $data = array(), $postarr = array() ) {
+    public function override_type( $data = array(), $postarr = array() ) {
+        // Get global database querying object
+        global $wpdb;
 
 		// Bail if form field is missing
 		if ( empty( $_REQUEST['pts_post_type'] ) || empty( $_REQUEST['pts-nonce-select'] ) ) {
@@ -385,10 +387,19 @@ final class Post_Type_Switcher {
 		// Bail if it's a revision
 		if ( in_array( $postarr['post_type'], array( $post_type, 'revision' ), true ) ) {
 			return $data;
-		}
+        }
+
+        // Detect if wpml is installed and active
+        if ( function_exists('icl_object_id') ) {
+            // Check if we change post type for post like content
+            if (stripos($data['post_type'], 'post_') !== false) {
+                // Update post type in wpml translations table
+                $wpdb->update($wpdb->prefix . 'icl_translations', ['element_type' => 'post_'.$post_type], ['trid' => $postarr['ID'], 'element_type' => $data['post_type']]);
+            }
+        }
 
 		// Update post type
-		$data['post_type'] = $post_type;
+        $data['post_type'] = $post_type;
 
 		// Return modified post data
 		return $data;

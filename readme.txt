@@ -1,9 +1,9 @@
-=== Post Type Switcher ===
-Contributors: johnjamesjacoby, beatpanda, norcross, stuttter
-Tags: post, page, type, types, post type
+=== Post Type Switcher Extended ===
+Contributors: johnjamesjacoby, beatpanda, norcross, stuttter, daemeron
+Tags: post, page, type, types, post type, wpml
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 3.1.0
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
@@ -22,6 +22,8 @@ The plugin can convert nearly every combination of posts, pages, and even custom
 * Post to Page
 * Post to Custom
 * Custom to Custom
+
+As of 3.1.2, plugin works good with wmpl powered post types.
 
 As of 3.0.0, support for switching to or from Attachments was removed. This may come back in a subsequent version.
 
